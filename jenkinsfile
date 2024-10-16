@@ -14,10 +14,10 @@ pipeline {
           checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jen-doc-token', url: 'https://github.com/JakubObrycki/Zomato-app.git']])
         }
       }
-          withSonarQubeEnv ('sonar-server') {
-            sh '''${SCANNER_H
     stage('Sonarqube analysis') {
-        steps {OME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
+        steps {
+          withSonarQubeEnv ('sonar-server') {
+            sh '''${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
             -Dsonar.projectKey=Zomato-app'''
           }
         }
