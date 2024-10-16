@@ -15,7 +15,8 @@ pipeline {
     stage('Sonarqube analysis') {
         steps {
           withSonarQubeEnv ('sonar-server') {
-            sh '${SCANNER_HOME}/bin/sonar-scanner'
+            sh '''${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
+            -Dsonar.projectKey=Zomato-app'''
           }
         }
       }
