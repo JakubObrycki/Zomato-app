@@ -6,12 +6,15 @@ pipeline {
   environment {
     DOCKER_CREDENTIALS = credentials('jen-dockerhub')
     SCANNER_HOME = tool 'sonar-scanner'
+    dockerTag='zomaimage'
+    imageName='web'
   }
 
   stages {
     stage('Git checkout') {
       steps {
           checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jen-doc-token', url: 'https://github.com/JakubObrycki/Zomato-app.git']])
+          sh "echo 'Succeeded'"
         }
       }
     stage('Sonarqube analysis') {
@@ -19,6 +22,7 @@ pipeline {
           withSonarQubeEnv ('sonar-server') {
             sh '''${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
             -Dsonar.projectKey=Zomato-app'''
+            sh "echo 'Succeeded'"
           }
         }
       }
@@ -26,12 +30,25 @@ pipeline {
         steps {
           script {
             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+            sh "echo 'Succeeded'"
           }
         }
       }
     stage ('Install dependencies') {
         steps {
           sh 'npm install'
+          sh "echo 'Succeeded'"
+        }
+      }
+    stage ('Docker Build and Push') {
+        steps {
+          script {
+            sh '''
+            echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
+            docker tag $imageName $DOCKER_CREDENTIALS_USR/$imageName'
+            docker push $DOCKER_CREDENTIALS_USR/$imageName'''
+            sh "echo 'Succeeded'"
+          }
         }
       }
     }
