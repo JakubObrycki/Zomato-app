@@ -1,6 +1,8 @@
 pipeline {
   agent any
-
+  tools {
+    nodejs 'node16'
+  }
   environment {
     DOCKER_CREDENTIALS = credentials('jen-dockerhub')
     SCANNER_HOME = tool 'sonar-scanner'
@@ -12,10 +14,10 @@ pipeline {
           checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jen-doc-token', url: 'https://github.com/JakubObrycki/Zomato-app.git']])
         }
       }
-    stage('Sonarqube analysis') {
-        steps {
           withSonarQubeEnv ('sonar-server') {
-            sh '''${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
+            sh '''${SCANNER_H
+    stage('Sonarqube analysis') {
+        steps {OME}/bin/sonar-scanner -Dsonar.projectName=Zomato-app \
             -Dsonar.projectKey=Zomato-app'''
           }
         }
