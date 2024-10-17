@@ -45,8 +45,8 @@ pipeline {
           script {
             sh 'docker --version'
             sh '''
-            echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
-            docker tag $imageName $DOCKER_CREDENTIALS_USR/$imageName'
+            echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin
+            docker tag $imageName $DOCKER_CREDENTIALS_USR/$imageName
             docker push $DOCKER_CREDENTIALS_USR/$imageName'''
             sh "echo 'Succeeded'"
           }
