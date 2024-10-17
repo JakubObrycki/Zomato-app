@@ -42,10 +42,18 @@ pipeline {
             sh '''
             echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin
             docker tag $imageName $DOCKER_CREDENTIALS_USR/$imageName
-            docker push $DOCKER_CREDENTIALS_USR/$imageName'''
+            docker push $DOCKER_CREDENTIALS_USR/$imageName
+            '''
             sh "echo 'Succeeded'"
           }
         }
       }
+    stage ('Docker run container') {
+        steps {
+          script {
+            sh 'docker run -d -p 3000:3000 ${imageName}/${dockerTag}'
+          }
+        }
+      }  
     }
   }
