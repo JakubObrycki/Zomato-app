@@ -34,12 +34,6 @@ pipeline {
           }
         }
       }
-    stage ('Install dependencies') {
-        steps {
-          sh 'npm install'
-          sh "echo 'Succeeded'"
-        }
-      }
     stage ('Docker Build and Push') {
         steps {
           script {
