@@ -26,14 +26,14 @@ pipeline {
           }
         }
       }
-    stage ('Quality gate') {
+    */stage ('Quality gate') {
         steps {
           script {
             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
             sh "echo 'Succeeded'"
           }
         }
-      }
+      }/*
     stage ('Docker Build and Push') {
         steps {
           script {
